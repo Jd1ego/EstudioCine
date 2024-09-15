@@ -1,5 +1,6 @@
 package com.jcja.cine_back.bd.orm;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,8 @@ public class PresupuestoORM {
     private String moneda;
 
     @OneToOne
-    @JoinColumn(name = "proyecto_id")
+    @JoinColumn(name = "proyecto_id",nullable = false)
+    @JsonBackReference
     private ProyectoORM proyecto;
 
     public PresupuestoORM(int cantidad, String moneda, ProyectoORM proyecto) {

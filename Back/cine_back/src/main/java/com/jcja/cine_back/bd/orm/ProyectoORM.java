@@ -25,10 +25,12 @@ public class ProyectoORM {
     @JsonManagedReference
     private GuionORM guion;
 
-    @OneToOne(mappedBy = "proyecto")
+    @OneToOne(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private ProgresoORM progreso;
 
-    @OneToOne(mappedBy = "proyecto")
+    @OneToOne(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private PresupuestoORM presupuesto;
 
     @ManyToMany
