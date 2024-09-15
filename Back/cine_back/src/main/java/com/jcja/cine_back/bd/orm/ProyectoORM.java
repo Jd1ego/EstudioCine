@@ -48,4 +48,9 @@ public class ProyectoORM {
     public ProyectoORM(String titulo) {
         this.titulo = titulo;
     }
+
+    public ProyectoORM(Long id, String titulo) {
+        this.id = id;
+        this.titulo = titulo;
+    }
 }

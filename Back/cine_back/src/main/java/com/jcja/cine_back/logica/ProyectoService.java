@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -46,5 +48,14 @@ public class ProyectoService {
         proyectoJPA.save(proyectoORM);
 
         return true;
+    }
+    public Map<Long, String> obtenerTitulosProyectos() {
+        return proyectoJPA.findAll().stream()
+                .collect(Collectors.toMap(ProyectoORM::getId, ProyectoORM::getTitulo));
+    }
+    public List<ProyectoORM> obtenerProyectos() {
+        return proyectoJPA.findAll().stream()
+                .map(proyecto -> new ProyectoORM(proyecto.getId(), proyecto.getTitulo()))
+                .collect(Collectors.toList());
     }
 }
