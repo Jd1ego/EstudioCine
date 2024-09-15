@@ -21,7 +21,7 @@ public class ProyectoController {
     @PostMapping(path = "/Proyecto")
     public String guardarProyecto(@RequestBody ProyectoDTO proyecto) {
 
-        proyectoService.guardarProyecto(proyecto);
+        proyectoService.crearYGuardarProyectoCompleto(proyecto);
 
         return "Proyecto guardado correctamente";
 

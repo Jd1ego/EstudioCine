@@ -22,7 +22,7 @@ public class ProyectoService {
     EquipoProduccionJPA equipoProduccionJPA;
 
 
-    public boolean adjuntarGuion(GuionORM guionORM,ProyectoORM proyectoORM) {
+    public boolean asignarGuion(GuionORM guionORM,ProyectoORM proyectoORM) {
 
         if (guionORM != null) {
             proyectoORM.setGuion(guionORM);
@@ -53,18 +53,28 @@ public class ProyectoService {
         }
         return false;
     }
-    public  boolean guardarProyecto(ProyectoDTO proyectoDTO) {
 
+    public ProyectoORM crearProyecto(ProyectoDTO proyectoDTO) {
         ProyectoORM proyectoORM = new ProyectoORM();
         proyectoORM.setTitulo(proyectoDTO.titulo());
+        return proyectoORM;
+    }
+
+    public boolean guardarProyecto(ProyectoORM proyectoORM) {
+        proyectoJPA.save(proyectoORM);
+        return true;
+    }
+    public  boolean crearYGuardarProyectoCompleto(ProyectoDTO proyectoDTO) {
+
+        ProyectoORM proyectoORM = crearProyecto(proyectoDTO);
         asignarEquiposProduccion(proyectoDTO,proyectoORM);
         GuionORM guionORM = guionService.crearGuion(proyectoDTO.guionDTO(),proyectoORM);
-        adjuntarGuion(guionORM,proyectoORM);
+        asignarGuion(guionORM,proyectoORM);
         PresupuestoORM presupuestoORM = presupuestoService.crearPresupuesto(proyectoDTO.presupuestoDTO(),proyectoORM);
         asignarPresupuesto(presupuestoORM,proyectoORM);
         ProgresoORM progresoORM = progresoService.CrearProgreso(proyectoDTO.progresoDTO(),proyectoORM);
         asignarProgreso(progresoORM,proyectoORM);
-        proyectoJPA.save(proyectoORM);
+        guardarProyecto(proyectoORM);
 
         return true;
     }
@@ -81,6 +91,11 @@ public class ProyectoService {
     public List<ProyectoORM> obtenerProyectos() {
         return proyectoJPA.findAll().stream()
                 .map(proyecto -> new ProyectoORM(proyecto.getId(), proyecto.getTitulo()))
+                .collect(Collectors.toList());
+    }
+    public List<Long> obtenerIdsProyectos(List<ProyectoORM> proyectos) {
+        return proyectos.stream()
+                .map(ProyectoORM::getId)
                 .collect(Collectors.toList());
     }
 }
