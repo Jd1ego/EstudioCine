@@ -35,6 +35,7 @@ public class ProyectoController {
     public Map consultarTituloProyectos(){
         return
                 proyectoService.obtenerTitulosProyectos();
+
     }
 
 }

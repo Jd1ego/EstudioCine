@@ -88,6 +88,7 @@ public class ProyectoService {
         return proyectoJPA.findAll().stream()
                 .collect(Collectors.toMap(ProyectoORM::getId, ProyectoORM::getTitulo));
     }
+
     public List<ProyectoORM> obtenerProyectos() {
         return proyectoJPA.findAll().stream()
                 .map(proyecto -> new ProyectoORM(proyecto.getId(), proyecto.getTitulo()))
@@ -96,6 +97,11 @@ public class ProyectoService {
     public List<Long> obtenerIdsProyectos(List<ProyectoORM> proyectos) {
         return proyectos.stream()
                 .map(ProyectoORM::getId)
+                .collect(Collectors.toList());
+    }
+    public List<String> obtenerListaTitulosProyectos(List<ProyectoORM> proyectos) {
+        return proyectos.stream()
+                .map(ProyectoORM::getTitulo)
                 .collect(Collectors.toList());
     }
 }

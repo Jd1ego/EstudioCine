@@ -29,6 +29,7 @@ public class ProyectoORM {
     @JsonManagedReference
     private ProgresoORM progreso;
 
+
     @OneToOne(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private PresupuestoORM presupuesto;

@@ -2,6 +2,7 @@ package com.jcja.cine_back.logica;
 
 import com.jcja.cine_back.bd.jpa.EquipoProduccionJPA;
 import com.jcja.cine_back.bd.orm.EquipoProduccionORM;
+import com.jcja.cine_back.bd.orm.ProyectoORM;
 import com.jcja.cine_back.controller.dto.EquipoProduccionDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,13 +40,16 @@ public class EquipoProduccionService {
         return equipoProduccionJPA.findAll();
     }
 
-    public List<EquipoProduccionDTO> obtenerTodosEquiposConId() {
+
+
+    public List<EquipoProduccionDTO> obtenerEquiposProyectos() {
         return equipoProduccionJPA.findAll().stream()
                 .map(equipo -> new EquipoProduccionDTO(
                         equipo.getNombre(),
                         equipo.getRol(),
                         equipo.getContacto(),
-                        proyectoService.obtenerIdsProyectos(equipo.getProyectos())
+                        proyectoService.obtenerIdsProyectos(equipo.getProyectos()),   // IDs de los proyectos
+                        proyectoService.obtenerListaTitulosProyectos(equipo.getProyectos()) // Títulos de los proyectos
                 ))
                 .collect(Collectors.toList());
     }
