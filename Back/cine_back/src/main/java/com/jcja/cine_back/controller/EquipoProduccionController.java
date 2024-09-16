@@ -26,9 +26,9 @@ public class EquipoProduccionController {
     public List<EquipoProduccionORM> obtenerEquipos() {
         return equipoProduccionService.obtenerTodosEquipos();
     }
-    @GetMapping(path = "/Equipos/Id")
-    public List<EquipoProduccionDTO> obtenerEquiposConId() {
-        return equipoProduccionService.obtenerTodosEquiposConId();
+    @GetMapping(path = "/Equipos/Proyectos")
+    public List<EquipoProduccionDTO> obtenerEquiposProyectos() {
+        return equipoProduccionService.obtenerEquiposProyectos();
     }
 
 
