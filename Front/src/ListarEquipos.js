@@ -3,14 +3,14 @@ import ConexionService from "./Servicios/ConexionService";
 import { Link } from 'react-router-dom';
 import './ListaProyecto.css'; 
 
-export const ListProyecto = () => {
-    const [proyectos, setProyectos] = useState([]);
+export const ListEquipo = () => {
+    const [equipos, setEquipos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        ConexionService.getAllProyectos()
+        ConexionService.getAllEquipos()
             .then(response => {
-                setProyectos(response.data);
+                setEquipos(response.data);
                 console.log(response.data);
             })
             .catch(error => {
@@ -22,31 +22,30 @@ export const ListProyecto = () => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredProyectos = proyectos.filter(proyecto =>
-        proyecto.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredEquipos = equipos.filter(equipo =>
+        equipo.rol.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
         <div className="list-proyecto-container">
             <aside className="sidebar">
-            <h2>Menú</h2>
+                <h2>Menú</h2>
+                <Link to="/Listar" className='btn-primary'>Listar Proyectos</Link>
                 <Link to='/add-proyecto' className='btn-primary'>Agregar Proyecto</Link>
-                <Link to='/Listar-equipos' className='btn-primary'>Lista equipos</Link>
-
             </aside>
             <main className="content">
                 <header className="list-proyecto-header">
-                    <h2>Lista de Proyectos en desarrollo</h2>
+                    <h2>Lista de Equipos</h2>
                     <hr />
                     <div className="search-container">
                         <label htmlFor="search-input">
-                            Buscar por título:
+                            Buscar por rol:
                             <input
                                 id="search-input"
                                 type="text"
                                 value={searchTerm}
                                 onChange={handleSearchChange}
-                                placeholder="Ingrese el título del proyecto"
+                                placeholder="Ingrese el rol del equipo"
                             />
                         </label>
                     </div>
@@ -56,29 +55,35 @@ export const ListProyecto = () => {
                     <table className="styled-table">
                         <thead>
                             <tr>
-                                
-                                <th>Título</th>
-                                <th>Guion</th>
-                                <th>Progreso</th>
-                                <th>Presupuesto</th>
-                                
+                                <th>Nombre</th>
+                                <th>Rol</th>
+                                <th>Contacto</th>
+                                <th>Títulos</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredProyectos.length > 0 ? (
-                                filteredProyectos.map(proyecto => (
-                                    <tr key={proyecto.id}>
-                                        
-                                        <td>{proyecto.titulo}</td>
-                                        <td>{proyecto.guion}</td>
-                                        <td>{proyecto.progreso}</td>
-                                        <td>{proyecto.presupuesto}</td>
-                                        
+                            {filteredEquipos.length > 0 ? (
+                                filteredEquipos.map(equipo => (
+                                    <tr key={equipo.id}>
+                                        <td>{equipo.nombre}</td>
+                                        <td>{equipo.rol}</td>
+                                        <td>{equipo.contacto}</td>
+                                        <td>
+                                            {equipo.EquiposTitulos && equipo.EquiposTitulos.length > 0 ? (
+                                                <ul>
+                                                    {equipo.EquiposTitulos.map((titulo, index) => (
+                                                        <li key={index}>{titulo}</li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <span>No hay títulos</span>
+                                            )}
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6">No se encontraron proyectos.</td>
+                                    <td colSpan="4">No se encontraron equipos.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -89,4 +94,4 @@ export const ListProyecto = () => {
     );
 };
 
-export default ListProyecto;
+export default ListEquipo;
