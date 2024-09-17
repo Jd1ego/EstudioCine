@@ -26,7 +26,7 @@ public class ProyectoController {
         return "Proyecto guardado correctamente";
 
     }
-    @GetMapping (path = "/Proyectos")
+    @GetMapping (path = "/Proyectos/All")
     public List consultarProyectos(){
         return
                 proyectoService.obtenerProyectos();
@@ -36,6 +36,10 @@ public class ProyectoController {
         return
                 proyectoService.obtenerTitulosProyectos();
 
+    }
+    @GetMapping (path = "/Proyectos")
+    public List<ProyectoDTO> obtenerProyectos(){
+        return proyectoService.obtenerProyectoDetallado();
     }
 
 }

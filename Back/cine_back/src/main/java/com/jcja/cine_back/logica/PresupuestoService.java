@@ -24,5 +24,8 @@ public class PresupuestoService {
         }
         return null;
     }
+    public Integer obtenerPresupuesto(PresupuestoORM presupuestoORM) {
+        return presupuestoORM.getCantidad();
+    }
 }
 

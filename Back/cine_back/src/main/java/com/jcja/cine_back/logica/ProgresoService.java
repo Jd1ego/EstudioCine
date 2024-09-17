@@ -26,4 +26,7 @@ public class ProgresoService {
         return null;
 
     }
+    public Double obtenerProgreso(ProgresoORM progresoORM){
+        return progresoORM.getPorcentajeCompletado();
+    }
 }
