@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import ExampleService from './Services/ExampleService';
+import ConexionService from "./Servicios/ConexionService";
 import { Link } from 'react-router-dom';
-import './ListEstudiante.css'; 
+import './ListaProyecto.css'; 
 
 export const ListProyecto = () => {
     const [proyectos, setProyectos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        ExampleService.getAllClientes()
+        ConexionService.getAllProyectos()
             .then(response => {
                 setProyectos(response.data);
                 console.log(response.data);
