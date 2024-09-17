@@ -1,122 +1,180 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ConexionService from "./Servicios/ConexionService";
 import { Link } from "react-router-dom";
-import './AñadirProyecto.css';
-
 export const AddProyecto = () => {
-  const [titulo, setTitulo] = useState('');
-  const [guion, setGuion] = useState('');
-  const [progreso, setProgreso] = useState('');
-  const [presupuesto, setPresupuesto] = useState('');
-  const [error, setError] = useState('');
-  const [equiposProduccion, setEquiposProduccion] = useState([]);
+    const [titulo, setTitulo] = useState('');
+    const [equipoIds, setEquipoIds] = useState([]);
+    const [equiposDisponibles, setEquiposDisponibles] = useState([]);
+    const [guionAutor, setGuionAutor] = useState('');
+    const [guionFechaCreacion, setGuionFechaCreacion] = useState('');
+    const [presupuestoCantidad, setPresupuestoCantidad] = useState('');
+    const [presupuestoMoneda, setPresupuestoMoneda] = useState('');
+    const [progresoEtapa, setProgresoEtapa] = useState('');
+    const [progresoPorcentaje, setProgresoPorcentaje] = useState('');
+    const [progresoFechaActualizacion, setProgresoFechaActualizacion] = useState('');
 
-  const saveProyecto = (e) => {
-    e.preventDefault();
+    useEffect(() => {
+        ConexionService.getAllEquipos()
+            .then(response => setEquiposDisponibles(response.data))
+            .catch(error => console.error("Error al obtener equipos:", error));
+    }, []);
 
-    if (titulo.trim() === '' || guion.trim() === '') {
-      setError('Por favor complete todos los campos.');
-      return;
-    }
+    const saveProyecto = (e) => {
+        e.preventDefault();
 
-    setError('');
-    const proyecto = { titulo, guion, progreso, presupuesto, equiposProduccion };
+        if (titulo.trim() === '' ||  guionAutor.trim() === '' || 
+            presupuestoCantidad.trim() === '' || progresoEtapa.trim() === '' || progresoPorcentaje.trim() === '') {
+            alert('Por favor complete todos los campos.');
+            return;
+        }
 
-    ConexionService.addEstudiante(proyecto)
-      .then(() => {
-        console.log("Proyecto guardado exitosamente");
-        setTitulo('');
-        setGuion('');
-        setProgreso('');
-        setPresupuesto('');
-        setEquiposProduccion([]);
-      })
-      .catch((error) => {
-        console.error("Error al guardar el Proyecto:", error);
-      });
-  };
+        const proyecto = {
+            titulo,
+            equipoIds,
+            guionDTO: {
 
-  return (
-    <div className="add-estudiante-container">
-      <aside className="sidebarr">
+                autor: guionAutor,
+                fechaCreacion: guionFechaCreacion
+            },
+            presupuestoDTO: {
+                cantidad: parseFloat(presupuestoCantidad),
+                moneda: presupuestoMoneda
+            },
+            progresoDTO: {
+                etapa: progresoEtapa,
+                porcentajeCompletado: parseFloat(progresoPorcentaje),
+                fechaActualizacion: progresoFechaActualizacion
+            }
+        };
+
+        ConexionService.addProyecto(proyecto)
+            .then(() => {
+                console.log("Proyecto guardado exitosamente");
+                setTitulo('');
+                setGuionAutor('');
+                setGuionFechaCreacion('');
+                setPresupuestoCantidad('');
+                setPresupuestoMoneda('');
+                setProgresoEtapa('');
+                setProgresoPorcentaje('');
+                setProgresoFechaActualizacion('');
+                setEquipoIds([]);
+            })
+            .catch((error) => {
+                console.error("Error al guardar el Proyecto:", error);
+            });
+    };
+
+    return (
+        <div className="add-estudiante-container">
+        <aside className="sidebar">
         <h2>Menú</h2>
         <ul>
-          <Link to="/Listar" className='btn'>Listar Proyectos</Link>
+          <Link to="/Listar" className='btn-primary'>Listar Equipos</Link>
         </ul>
       </aside>
-
       <main className="content">
-        <h1>Registro de nuevos proyectos</h1>
-        {error && <p className="error-message">{error}</p>} {/* Muestra el mensaje de error */}
+            <h1>Registro de nuevos proyectos</h1>
+            <hr></hr>
+            <form onSubmit={saveProyecto}>
+                <div className="form-group">
+                    <label>Título del Proyecto:</label>
+                    <input
+                        type="text"
+                        value={titulo}
+                        onChange={(e) => setTitulo(e.target.value)}
+                    />
+                </div>
 
-        <form onSubmit={saveProyecto}>
-          <div className="form-group">
-            <label>
-              Titulo:
-              <input
-                type="text"
-                placeholder="Digite el título"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-              />
-            </label>
-          </div>
-          <div className="form-group">
-            <label>
-              Guion:
-              <input
-                type="text"
-                placeholder="Digite el guion"
-                value={guion}
-                onChange={(e) => setGuion(e.target.value)}
-              />
-            </label>
-          </div>
-          <div className="form-group">
-            <label>
-              Progreso:
-              <input
-                type="text"
-                placeholder="Digite el progreso"
-                value={progreso}
-                onChange={(e) => setProgreso(e.target.value)}
-              />
-            </label>
-          </div>
-          <div className="form-group">
-            <label>
-              Presupuesto:
-              <input
-                type="text"
-                placeholder="Digite el presupuesto"
-                value={presupuesto}
-                onChange={(e) => setPresupuesto(e.target.value)}
-              />
-            </label>
-          </div>
-          <div className="form-group">
-            <label>
-              Equipos de Producción:
-              <select
-                multiple
-                value={equiposProduccion}
-                onChange={(e) => {
-                  const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-                  setEquiposProduccion(selectedOptions);
-                }}
-              >
-                <option value="camara">Cámara</option>
-                <option value="sonido">Sonido</option>
-                <option value="iluminacion">Iluminación</option>
-                <option value="edicion">Edición</option>
-              </select>
-            </label>
-          </div>
-          <button type="submit">Guardar</button>
-        </form>
-      </main>
-    </div>
-  );
+                {/* Campos de guionDTO */}
+
+
+                <div className="form-group">
+                    <label>Autor del Guion:</label>
+                    <input
+                        type="text"
+                        value={guionAutor}
+                        onChange={(e) => setGuionAutor(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Fecha de Creación del Guion:</label>
+                    <input
+                        type="date"
+                        value={guionFechaCreacion}
+                        onChange={(e) => setGuionFechaCreacion(e.target.value)}
+                    />
+                </div>
+
+                {/* Campos de presupuestoDTO */}
+
+                <div className="form-group">
+                    <label>Cantidad del Presupuesto:</label>
+                    <input
+                        type="number"
+                        value={presupuestoCantidad}
+                        onChange={(e) => setPresupuestoCantidad(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Moneda:</label>
+                    <input
+                        type="text"
+                        value={presupuestoMoneda}
+                        onChange={(e) => setPresupuestoMoneda(e.target.value)}
+                    />
+                </div>
+
+                {/* Campos de progresoDTO */}
+
+                <div className="form-group">
+                    <label>Etapa del Proyecto:</label>
+                    <input
+                        type="text"
+                        value={progresoEtapa}
+                        onChange={(e) => setProgresoEtapa(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Porcentaje Completado:</label>
+                    <input
+                        type="number"
+                        step="0.1"
+                        value={progresoPorcentaje}
+                        onChange={(e) => setProgresoPorcentaje(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Fecha de Actualización del Progreso:</label>
+                    <input
+                        type="date"
+                        value={progresoFechaActualizacion}
+                        onChange={(e) => setProgresoFechaActualizacion(e.target.value)}
+                    />
+                </div>
+
+                {/* Selección de equipos */}
+
+                <div className="form-group">
+                    <label>Equipos:</label>
+                    <select
+                        multiple
+                        value={equipoIds}
+                        onChange={(e) => {
+                            const selectedOptions = Array.from(e.target.selectedOptions, option => parseInt(option.value));
+                            setEquipoIds(selectedOptions);
+                        }}
+                    >
+                        {equiposDisponibles.map(equipo => (
+                            <option key={equipo.id} value={equipo.id}>{equipo.nombre}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <button type="submit">Guardar Proyecto</button>
+            </form>
+            </main>
+        </div>
+    );
 };
-
 export default AddProyecto;

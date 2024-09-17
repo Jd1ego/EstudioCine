@@ -1,6 +1,6 @@
 import React from 'react';
 import './Inicio.css'; 
-import film from './Imagenes/film.jpg'
+
 import { Link } from 'react-router-dom';
 
 const Bienvenido = () => {

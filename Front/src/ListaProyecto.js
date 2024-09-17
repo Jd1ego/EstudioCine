@@ -32,7 +32,10 @@ export const ListProyecto = () => {
             <h2>Menú</h2>
                 <Link to='/add-proyecto' className='btn-primary'>Agregar Proyecto</Link>
                 <Link to='/Listar-equipos' className='btn-primary'>Lista equipos</Link>
-
+                <div className="image-section">
+               
+                
+               </div>
             </aside>
             <main className="content">
                 <header className="list-proyecto-header">

@@ -1,8 +1,9 @@
 
+
 .list-proyecto-container {
     display: flex;
     height: 100vh;
-    background-color: #f9f9f9; 
+    background-color: #f9f4f4; 
 }
 
 .sidebar {
@@ -15,17 +16,22 @@
     align-items: center;
 }
 
-
+.image-section {
+    flex: 1;
+    background: url('./Imagenes/film.jpg') no-repeat center;
+    background-size: cover;
+    height: 100%;
+}
 
 .btn-primary {
     padding: 10px 20px;
     background-color: #fff;
     color: #007bff;
     text-decoration: none;
-    border-radius: 5px;
+
     font-size: 1.2em;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-top: 20px;
+  
 }
 
 .btn-primary:hover {
@@ -68,7 +74,7 @@
 .styled-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #f7efef;
+    background-color: #816e6e;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
