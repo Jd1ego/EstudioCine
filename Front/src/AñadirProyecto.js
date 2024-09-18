@@ -168,10 +168,10 @@ export const AddProyecto = () => {
         onChange={(e) => {
             const selectedId = parseInt(e.target.value, 10);
             if (equipoIds.includes(selectedId)) {
-                // Si el equipo ya está seleccionado, lo quitamos
+                
                 setEquipoIds(equipoIds.filter(id => id !== selectedId));
             } else {
-                // Si no está seleccionado, lo agregamos
+                
                 setEquipoIds([...equipoIds, selectedId]);
             }
         }}

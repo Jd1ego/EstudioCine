@@ -137,15 +137,15 @@
 
 
 
-/* Contenedor principal del formulario, ajustado para ocupar toda la altura disponible */
+
 .form {
-    flex: 1; /* Hace que el formulario ocupe todo el espacio disponible */
+    flex: 1;
     padding: 20px;
     overflow-y: auto;
     background-color: #816e6e;
     display: flex;
-    flex-direction: column; /* Distribuye el contenido del formulario verticalmente */
-    align-items: center; /* Centra el contenido horizontalmente */
+    flex-direction: column; 
+    align-items: center; 
     background: url('./Imagenes/photography-1850469.jpg') no-repeat center center fixed;
     background-size: cover;
     height: 100vh;
@@ -153,18 +153,18 @@
     
 }
 
-/* Contenedor del título ajustado para no salir del límite superior */
+
 .title-container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 110%;
     background-color: #000;
-    padding: 10px 0; /* Añadido padding para espacio interno */
+    padding: 10px 0; 
     transform: translateY(-30px);
 }
 
-/* Estilo para el encabezado del formulario */
+
 .title {
     font-size: 2.5em;
     color: #f1e9e9;
@@ -175,14 +175,14 @@
     width: 100%;
 }
 
-/* Estilo para la línea horizontal */
+
 hr {
     border: 0;
     border-top: 1px solid #ddd;
     margin: 20px 0;
 }
 
-/* Estilo para el formulario */
+
 form {
     display: flex;
     flex-direction: column;
@@ -195,7 +195,7 @@ form {
     margin: auto;
 }
 
-/* Estilo para cada grupo de formulario */
+
 .form-group {
     margin-bottom: 20px;
     width: 100%;
@@ -220,12 +220,12 @@ select {
     box-sizing: border-box;
 }
 
-/* Estilo para el select con múltiples opciones */
+
 select {
     height: auto;
 }
 
-/* Estilo para el botón de envío del formulario */
+
 button {
     background-color: #007bff;
     color: #fff;

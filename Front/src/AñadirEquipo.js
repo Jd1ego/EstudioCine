@@ -27,7 +27,7 @@ export const AddEquipo = () => {
         setNombre('');
         setRol('');
         setContacto('');
-        // Opcionalmente, puedes redirigir al usuario o mostrar un mensaje de éxito
+      
       })
       .catch((error) => {
         console.error("Error al guardar el equipo:", error);
