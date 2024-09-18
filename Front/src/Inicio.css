@@ -1,48 +1,63 @@
 .home-page {
-    display: flex;
+    position: relative;
     height: 100vh;
+    width: 100vw;
     margin: 0;
-    background-color: #f0f0f0; 
-}
-
-.image-section {
-    flex: 1;
-    background: url('./Imagenes/film.jpg') no-repeat center center;
+    background: url('./Imagenes/film.jpg') no-repeat center center fixed;
     background-size: cover;
-    height: 100%;
 }
 
-.bienvenido {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+.overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    background-color: #e3d3d3;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    border-radius: 10px;
 }
 
-.bienvenido h1 {
+.welcome-title {
     font-size: 3em;
+    color: white;
     margin-bottom: 20px;
 }
 
-.bienvenido p {
-    font-size: 1.5em;
-    margin-bottom: 40px;
+.welcome-subtitle {
+    font-size: 2em;
+    color: white;
+    margin-bottom: 30px;
 }
 
-.btn-start {
-    font-size: 1.2em;
-    padding: 15px 30px;
-    background-color: #ff6600;
+.button-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; 
+    gap: 20px; 
+}
+
+.btn-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2em; 
+    padding: 20px;
+    background-color: #932817;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    width: 150px; 
+    height: 150px; 
     transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
 }
 
-.btn-start:hover {
+.btn-icon:hover {
     background-color: #e65c00;
+}
+
+.btn-icon svg {
+    margin-bottom: 10px; 
 }

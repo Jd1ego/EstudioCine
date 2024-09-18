@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import ConexionService from "./Servicios/ConexionService";
 import { Link } from "react-router-dom";
 
+import { FaFilm, FaPlus } from 'react-icons/fa';
+
 export const AddProyecto = () => {
     const [titulo, setTitulo] = useState('');
     const [equipoIds, setEquipoIds] = useState([]);
@@ -9,7 +11,7 @@ export const AddProyecto = () => {
     const [guionAutor, setGuionAutor] = useState('');
     const [guionFechaCreacion, setGuionFechaCreacion] = useState('');
     const [presupuestoCantidad, setPresupuestoCantidad] = useState('');
-    const [presupuestoMoneda, setPresupuestoMoneda] = useState('');
+    const [presupuestoMoneda, setPresupuestoMoneda] = useState('Dólares'); // Valor por defecto
     const [progresoEtapa, setProgresoEtapa] = useState('');
     const [progresoPorcentaje, setProgresoPorcentaje] = useState('');
     const [progresoFechaActualizacion, setProgresoFechaActualizacion] = useState('');
@@ -23,7 +25,7 @@ export const AddProyecto = () => {
     const saveProyecto = (e) => {
         e.preventDefault();
 
-        if (titulo.trim() === '' ||  guionAutor.trim() === '' || 
+        if (titulo.trim() === '' || guionAutor.trim() === '' || 
             presupuestoCantidad.trim() === '' || progresoEtapa.trim() === '' || progresoPorcentaje.trim() === '') {
             alert('Por favor complete todos los campos.');
             return;
@@ -54,7 +56,7 @@ export const AddProyecto = () => {
                 setGuionAutor('');
                 setGuionFechaCreacion('');
                 setPresupuestoCantidad('');
-                setPresupuestoMoneda('');
+                setPresupuestoMoneda('Dólares'); 
                 setProgresoEtapa('');
                 setProgresoPorcentaje('');
                 setProgresoFechaActualizacion('');
@@ -66,21 +68,23 @@ export const AddProyecto = () => {
     };
 
     return (
-        <div className="add-estudiante-container">
+        <div className="list-proyecto-container">
             <aside className="sidebar">
-                <h2>Menú</h2>
-                <ul>
-                    <Link to="/Listar-equipos" className='btn-primary'>Listar Equipos</Link>
-                    <Link to="/Listar" className='btn-primary'>Listar Proyectos</Link>
-                    <Link to='/add-equipo' className='btn-primary'>Agregar Equipo</Link>
-                </ul>
+                <h2 className="menu">Menú</h2>
+                <Link to="/Listar" className='btn-primary'><FaFilm /> Listar Proyectos</Link>
+                <Link to='/Listar-equipos' className='btn-primary'><FaFilm /> Listar Equipos</Link>
+                <Link to='/add-proyecto' className='btn-primary'><FaPlus /> Agregar Proyecto</Link>
+                <Link to='/add-equipo' className='btn-primary'><FaPlus /> Agregar Equipo</Link>
             </aside>
-            <main className="content">
-                <h1>Registro de nuevos proyectos</h1>
-                <hr></hr>
+            <main className="form">
+                <div className="title-container">
+                <h1 className="title">Registro de nuevos proyectos</h1>
+                </div>
+               
+                <hr />
                 <form onSubmit={saveProyecto}>
                     <div className="form-group">
-                        <label>Título del Proyecto:</label>
+                        <label>Título del Proyecto</label>
                         <input
                             type="text"
                             value={titulo}
@@ -89,7 +93,7 @@ export const AddProyecto = () => {
                     </div>
 
                     <div className="form-group">
-                        <label>Autor del Guion:</label>
+                        <label>Autor del Guion</label>
                         <input
                             type="text"
                             value={guionAutor}
@@ -97,7 +101,7 @@ export const AddProyecto = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Fecha de Creación del Guion:</label>
+                        <label>Fecha de Creación del Guion</label>
                         <input
                             type="date"
                             value={guionFechaCreacion}
@@ -106,7 +110,7 @@ export const AddProyecto = () => {
                     </div>
 
                     <div className="form-group">
-                        <label>Cantidad del Presupuesto:</label>
+                        <label>Cantidad del Presupuesto</label>
                         <input
                             type="number"
                             value={presupuestoCantidad}
@@ -115,15 +119,17 @@ export const AddProyecto = () => {
                     </div>
                     <div className="form-group">
                         <label>Moneda:</label>
-                        <input
-                            type="text"
+                        <select
                             value={presupuestoMoneda}
                             onChange={(e) => setPresupuestoMoneda(e.target.value)}
-                        />
+                        >
+                            <option value="Dólares">Dólares</option>
+                            <option value="Euros">Euros</option>
+                        </select>
                     </div>
 
                     <div className="form-group">
-                        <label>Etapa del Proyecto:</label>
+                        <label>Etapa del Proyecto</label>
                         <input
                             type="text"
                             value={progresoEtapa}
@@ -131,16 +137,22 @@ export const AddProyecto = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Porcentaje Completado:</label>
-                        <input
-                            type="number"
-                            step="0.1"
-                            value={progresoPorcentaje}
-                            onChange={(e) => setProgresoPorcentaje(e.target.value)}
-                        />
-                    </div>
+                     <label>Porcentaje Completado</label>
+            <div className="slider-container">
+                <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={progresoPorcentaje}
+                    onChange={(e) => setProgresoPorcentaje(e.target.value)}
+                    className="slider"
+                />
+                <span className="slider-value">{progresoPorcentaje}%</span>
+            </div>
+        </div>
                     <div className="form-group">
-                        <label>Fecha de Actualización del Progreso:</label>
+                        <label>Fecha de Actualización del Progreso</label>
                         <input
                             type="date"
                             value={progresoFechaActualizacion}
@@ -149,22 +161,29 @@ export const AddProyecto = () => {
                     </div>
 
                     <div className="form-group">
-                        <label>Equipos:</label>
-                        <select
-                            multiple
-                            value={equipoIds}
-                            onChange={(e) => {
-                                const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-                                setEquipoIds(selectedOptions);
-                            }}
-                        >
-                            {equiposDisponibles.map(equipo => (
-                                <option key={equipo.id} value={equipo.id}>
-                                    {equipo.nombre}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+    <label>Equipos disponibles</label>
+    <select
+        multiple
+        value={equipoIds}
+        onChange={(e) => {
+            const selectedId = parseInt(e.target.value, 10);
+            if (equipoIds.includes(selectedId)) {
+                // Si el equipo ya está seleccionado, lo quitamos
+                setEquipoIds(equipoIds.filter(id => id !== selectedId));
+            } else {
+                // Si no está seleccionado, lo agregamos
+                setEquipoIds([...equipoIds, selectedId]);
+            }
+        }}
+    >
+        {equiposDisponibles.map(equipo => (
+            <option key={equipo.id} value={equipo.id}>
+                {equipo.nombre}
+            </option>
+        ))}
+    </select>
+</div>
+
 
                     <button type="submit">Guardar Proyecto</button>
                 </form>
