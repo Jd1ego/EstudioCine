@@ -45,6 +45,7 @@ public class EquipoProduccionService {
     public List<EquipoProduccionDTO> obtenerEquiposProyectos() {
         return equipoProduccionJPA.findAll().stream()
                 .map(equipo -> new EquipoProduccionDTO(
+                        equipo.getId(),
                         equipo.getNombre(),
                         equipo.getRol(),
                         equipo.getContacto(),

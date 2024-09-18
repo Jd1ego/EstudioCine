@@ -42,4 +42,7 @@ public class ProyectoController {
         return proyectoService.obtenerProyectoDetallado();
     }
 
+
 }
+
+
