@@ -1,95 +1,111 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import ConexionService from "./Servicios/ConexionService";
-import { Link } from 'react-router-dom';
 import './ListaProyecto.css'; 
+import { Link } from "react-router-dom";
 
-export const ListProyecto = () => {
+const ProyectoCard = ({ proyecto }) => {
+    return (
+        <div className="proyecto-card">
+            <h2>{proyecto.titulo || "Título no disponible"}</h2>
+
+            {proyecto.Autor ? (
+                <p><strong>Autor:</strong> {proyecto.Autor}</p>
+            ) : (
+                <p><strong>Autor:</strong> No disponible</p>
+            )}
+
+            {proyecto.Presupuesto ? (
+                <p><strong>Presupuesto:</strong> {proyecto.Presupuesto}</p>
+            ) : (
+                <p><strong>Presupuesto:</strong> No disponible</p>
+            )}
+
+            {proyecto.Progreso ? (
+                <p><strong>Progreso:</strong> {proyecto.Progreso}%</p>
+            ) : (
+                <p><strong>Progreso:</strong> No disponible</p>
+            )}
+        </div>
+    );
+};
+
+
+export const ListaProyectos = () => {
     const [proyectos, setProyectos] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [filtro, setFiltro] = useState("");
 
     useEffect(() => {
         ConexionService.getAllProyectos()
             .then(response => {
+                console.log("Datos recibidos del backend:", response.data); 
                 setProyectos(response.data);
-                console.log(response.data);
             })
-            .catch(error => {
-                console.log(error);
-            });
+            .catch(error => console.error("Error al obtener proyectos:", error));
     }, []);
 
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-
-    const filteredProyectos = proyectos.filter(proyecto =>
-        proyecto.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+ 
+    const proyectosFiltrados = proyectos.filter(proyecto => 
+        proyecto.titulo && proyecto.titulo.toLowerCase().includes(filtro.toLowerCase())
     );
 
     return (
         <div className="list-proyecto-container">
             <aside className="sidebar">
-            <h2>Menú</h2>
+                <h2>Menú</h2>
+                <Link to="/Listar" className='btn-primary'>Listar Proyectos</Link>
                 <Link to='/add-proyecto' className='btn-primary'>Agregar Proyecto</Link>
-                <Link to='/Listar-equipos' className='btn-primary'>Lista equipos</Link>
-                <div className="image-section">
-               
-                
-               </div>
-            </aside>
-            <main className="content">
-                <header className="list-proyecto-header">
-                    <h2>Lista de Proyectos en desarrollo</h2>
-                    <hr />
-                    <div className="search-container">
-                        <label htmlFor="search-input">
-                            Buscar por título:
-                            <input
-                                id="search-input"
-                                type="text"
-                                value={searchTerm}
-                                onChange={handleSearchChange}
-                                placeholder="Ingrese el título del proyecto"
-                            />
-                        </label>
-                    </div>
-                </header>
 
-                <section className="table-container">
+            </aside>
+            
+            <main className="content">
+                <div className="list-proyecto-header">
+                    <h1>Lista de Proyectos</h1>
+                </div>
+
+                <div className="search-container">
+                    <label htmlFor="buscar-proyecto">Buscar Proyecto:</label>
+                    <input 
+                        type="text" 
+                        id="buscar-proyecto" 
+                        placeholder="Ingrese el nombre del proyecto" 
+                        value={filtro} // El valor del input está vinculado al estado "filtro"
+                        onChange={(e) => setFiltro(e.target.value)} // Actualiza el estado cuando el usuario escribe
+                    />
+                </div>
+
+                <hr />
+
+                <div className="table-container">
                     <table className="styled-table">
                         <thead>
                             <tr>
-                                
                                 <th>Título</th>
-                                <th>Guion</th>
-                                <th>Progreso</th>
+                                <th>Autor</th>
                                 <th>Presupuesto</th>
-                                
+                                <th>Progreso</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredProyectos.length > 0 ? (
-                                filteredProyectos.map(proyecto => (
-                                    <tr key={proyecto.id}>
-                                        
-                                        <td>{proyecto.titulo}</td>
-                                        <td>{proyecto.guion}</td>
-                                        <td>{proyecto.progreso}</td>
-                                        <td>{proyecto.presupuesto}</td>
-                                        
+                            {proyectosFiltrados.length > 0 ? (
+                                proyectosFiltrados.map((proyecto, index) => (
+                                    <tr key={index}>
+                                        <td>{proyecto.titulo || "Título no disponible"}</td>
+                                        <td>{proyecto.Autor || "Autor no disponible"}</td>
+                                        <td>{proyecto.Presupuesto ? `$${proyecto.Presupuesto}` : "Presupuesto no disponible"}</td>
+                                        <td>{proyecto.Progreso ? `${proyecto.Progreso}%` : "Progreso no disponible"}</td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6">No se encontraron proyectos.</td>
+                                    <td colSpan="4">No se encontraron proyectos.</td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
-                </section>
+                </div>
             </main>
         </div>
     );
 };
 
-export default ListProyecto;
+export default ListaProyectos;
