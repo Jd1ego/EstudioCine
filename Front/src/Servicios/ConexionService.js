@@ -12,6 +12,10 @@ class ConexionService{
     
     }
 
+
+    
+
+
     getAllEquipos(){
         return axios.get(EQUIPO_BASE);
     }
