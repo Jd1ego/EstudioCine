@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ConexionService from "./Servicios/ConexionService";
 import { Link } from "react-router-dom";
-import './AñadirProyecto.css';
+import './ListaProyecto.css'; 
+import { FaFilm, FaPlus } from 'react-icons/fa';
 
 export const AddEquipo = () => {
   const [nombre, setNombre] = useState('');
   const [rol, setRol] = useState('');
   const [contacto, setContacto] = useState('');
- 
-  const [error, setError] = useState('');
-
 
 
   const saveEquipo = (e) => {
     e.preventDefault();
 
-    if (nombre.trim() === '' || rol.trim() === '' ) {
-      setError('Por favor complete todos los campos.');
+    if (nombre.trim() === '' || rol.trim() === '' || contacto.trim() === '') {
+      alert('Por favor complete todos los campos.');
       return;
     }
 
-    setError('');
-    const equipo = { nombre, rol, contacto }; 
+   
+    const equipo = { nombre, rol, contacto };
 
     ConexionService.addEquipos(equipo)
       .then(() => {
@@ -29,28 +27,30 @@ export const AddEquipo = () => {
         setNombre('');
         setRol('');
         setContacto('');
-   
+      
       })
       .catch((error) => {
         console.error("Error al guardar el equipo:", error);
+        
       });
   };
 
-
-
   return (
-    <div className="add-estudiante-container">
+    <div className="list-proyecto-container">
       <aside className="sidebar">
-        <h2>Menú</h2>
-        <ul>
-          <Link to="/Listar" className='btn-primary'>Listar Equipos</Link>
-        </ul>
+        <h2 className="menu">Menú</h2>
+        <Link to="/Listar" className='btn-primary'><FaFilm /> Listar Proyectos</Link>
+        <Link to='/Listar-equipos' className='btn-primary'><FaFilm /> Listar Equipos</Link>
+        <Link to='/add-proyecto' className='btn-primary'><FaPlus /> Agregar Proyecto</Link>
+        <Link to='/add-equipo' className='btn-primary'><FaPlus /> Agregar Equipo</Link>
       </aside>
 
-      <main className="content">
-        <h1>Registro de nuevos equipos</h1>
+      <main className="form">
+        <div className="title-container">
+          <h1 className="title">Registro de nuevos equipos</h1>
+        </div>
         <hr />
-        {error && <p className="error-message">{error}</p>} {/* Muestra el mensaje de error */}
+   
 
         <form onSubmit={saveEquipo}>
           <div className="form-group">
@@ -85,9 +85,6 @@ export const AddEquipo = () => {
                 onChange={(e) => setContacto(e.target.value)}
               />
             </label>
-          </div>
-          <div className="form-group">
-        
           </div>
           <button type="submit">Guardar</button>
         </form>

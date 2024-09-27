@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ConexionService from "./Servicios/ConexionService";
 import { Link } from 'react-router-dom';
 import './ListaProyecto.css'; 
-
+import { FaFilm, FaPlus, FaSearch } from 'react-icons/fa';
 export const ListEquipo = () => {
     const [equipos, setEquipos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,16 +29,19 @@ export const ListEquipo = () => {
     return (
         <div className="list-proyecto-container">
             <aside className="sidebar">
-                <h2>Menú</h2>
-                <Link to="/Listar" className='btn-primary'>Listar Proyectos</Link>
-                <Link to='/add-proyecto' className='btn-primary'>Agregar Proyecto</Link>
+                <h2 className='menu'>Menú</h2>
+                <Link to="/Listar" className='btn-primary'><FaFilm /> Listar Proyectos</Link>
+                <Link to='/Listar-equipos' className='btn-primary'><FaFilm /> Listar Equipos</Link>
+                <Link to='/add-proyecto' className='btn-primary'><FaPlus /> Agregar Proyecto</Link>
+                <Link to='/add-equipo' className='btn-primary'><FaPlus /> Agregar Equipo</Link>
             </aside>
             <main className="content">
                 <header className="list-proyecto-header">
-                    <h2>Lista de Equipos</h2>
+                    <h1>Lista de Equipos</h1>
                     <hr />
                     <div className="search-container">
                         <label htmlFor="search-input">
+                        <FaSearch />
                             Buscar por rol:
                             <input
                                 id="search-input"
