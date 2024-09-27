@@ -80,10 +80,6 @@ public class ProyectoService {
     }
 
 
-
-
-
-
     public Map<Long, String> obtenerTitulosProyectos() {
         return proyectoJPA.findAll().stream()
                 .collect(Collectors.toMap(ProyectoORM::getId, ProyectoORM::getTitulo));
@@ -106,6 +102,7 @@ public class ProyectoService {
     }
     public List<ProyectoDTO> obtenerProyectoDetallado(){
         return proyectoJPA.findAll().stream().map(proyecto-> new ProyectoDTO(
+                
                 proyecto.getTitulo(),
                 null,
                 null,
@@ -114,6 +111,7 @@ public class ProyectoService {
                 proyecto.getGuion() != null ? guionService.obtenerAutor(proyecto.getGuion()) : "Autor desconocido",
                 proyecto.getPresupuesto() != null ? presupuestoService.obtenerPresupuesto(proyecto.getPresupuesto()) : 0,
                 proyecto.getProgreso() != null ? progresoService.obtenerProgreso(proyecto.getProgreso()) : 0
+
         )).collect(Collectors.toList());
 
     }

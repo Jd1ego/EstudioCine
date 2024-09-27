@@ -3,10 +3,7 @@ import com.jcja.cine_back.bd.orm.ProyectoORM;
 import com.jcja.cine_back.controller.dto.ProyectoDTO;
 import com.jcja.cine_back.logica.ProyectoService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +11,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 
+@CrossOrigin(origins = "http://157.173.122.1:3000")
 public class ProyectoController {
 
     private ProyectoService proyectoService;
