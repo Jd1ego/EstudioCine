@@ -19,6 +19,14 @@ repositories {
 	mavenCentral()
 }
 
+sonarqube {
+	properties {
+		property "sonar.host.url", "http://localhost:9000"
+		property "sonar.login", "a61d7fb5b18df58f091dc8a8145979ae87ca6ffb"
+		property "sonar.coverage.exclusions", "**/bd/**, **/orm/**, **/logica/**, **/dto/**"
+	}
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -34,11 +42,5 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// Configuración de SonarQube
-sonarqube {
-	properties {
-		property "sonar.host.url", "http://localhost:9000"
-		property "sonar.login", "a61d7fb5b18df58f091dc8a8145979ae87ca6ffb"
-		property "sonar.coverage.exclusions", "**/bd/**, **/orm/**, **/logica/**, **/dto/**"
-	}
-}
+
+

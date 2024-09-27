@@ -37,7 +37,7 @@ pipeline {
             steps {
                 dir('Back/cine_back') {
                     withSonarQubeEnv('sonarqube') {
-                        sh './gradlew sonarqube'
+                        sh './gradlew -b build.gradle sonarqube'
                     }
                 }
             }
