@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    tools {
+        gradle 'GRADLE'
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/Jd1ego/EstudioCine'
+            }
+        }
+        stage('Set Permissions') {
+            steps {
+                dir('Back/cine_back') {
+
+                    sh 'chmod +x gradlew'
+                }
+            }
+        }
+        stage('Verify Tasks') {
+            steps {
+                dir('Back/cine_back') {
+                    sh './gradlew tasks'
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                dir('Back/cine_back') {
+                    sh './gradlew clean build -x test'
+                }
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                dir('Back/cine_back') {
+                    withSonarQubeEnv('sonarqube') {
+                        sh './gradlew sonarqube'
+                    }
+                }
+            }
+        }
+    }
+}
