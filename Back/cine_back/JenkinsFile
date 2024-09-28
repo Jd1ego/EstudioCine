@@ -9,10 +9,8 @@ pipeline {
         stage('Clone and Checkout Latest Commit') {
             steps {
                 git branch: 'develop', url: 'https://github.com/Jd1ego/EstudioCine'
-
-                // Optional: Ensure it's fetching the latest commit
                 sh 'git fetch --all'
-                sh 'git reset --hard origin/develop'  // Reset to the latest commit from 'develop'
+                sh 'git reset --hard origin/develop'
             }
         }
 
@@ -27,29 +25,37 @@ pipeline {
         stage('Build') {
             steps {
                 dir('Back/cine_back') {
-                    sh './gradlew clean build -x test'  // Build sin ejecutar pruebas
+                    sh './gradlew clean build -x test'
                 }
             }
         }
 
-        stage('Run Tests') {  // Nueva etapa para ejecutar las pruebas
+        stage('Run Tests') {
             steps {
                 dir('Back/cine_back') {
-                    sh './gradlew test'  // Ejecuta las pruebas
+                    sh './gradlew test'
                 }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                dir('Back/cine_back') {
-                    withSonarQubeEnv('sonarqube') {
-                        script {
-                            // Captura el error del análisis de SonarQube
-                            catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                                sh './gradlew sonar -Dsonar.login=squ_12588c140fc2012b9317233038f6c837974b92fd'  // SonarQube análisis
-                            }
-                        }
+
+                withSonarQubeEnv('sonarqube') {
+                    dir('Back/cine_back') {
+                        sh './gradlew sonar -Dsonar.login=squ_12588c140fc2012b9317233038f6c837974b92fd'
+                    }
+                }
+            }
+        }
+
+        stage('Sonar Quality Gate') {
+            steps {
+                script {
+
+                    def qualityGateResult = waitForQualityGate()
+                    if (qualityGateResult.status != 'OK') {
+                        error "Quality Gate failed: ${qualityGateResult.status}"
                     }
                 }
             }
@@ -58,7 +64,7 @@ pipeline {
 
     post {
         always {
-            junit '**/build/test-results/test/*.xml'  // Publica los resultados de las pruebas
+            junit '**/build/test-results/test/*.xml'
         }
     }
 }
