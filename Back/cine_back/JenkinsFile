@@ -43,8 +43,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 dir('Back/cine_back') {
-                    withSonarQubeEnv('sonarqube'){
-                        sh './gradlew sonar -Dsonar.login=squ_12588c140fc2012b9317233038f6c837974b92fd'  // SonarQube análisis
+                    withSonarQubeEnv('sonarqube') {
+                        script {
+                            // Captura el error del análisis de SonarQube
+                            catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                                sh './gradlew sonar -Dsonar.login=squ_12588c140fc2012b9317233038f6c837974b92fd'  // SonarQube análisis
+                            }
+                        }
                     }
                 }
             }
