@@ -6,41 +6,54 @@ pipeline {
     }
 
     stages {
-        stage('Clone') {
+        stage('Clone and Checkout Latest Commit') {
             steps {
-                git 'https://github.com/Jd1ego/EstudioCine'
+                git branch: 'develop', url: 'https://github.com/Jd1ego/EstudioCine'
+
+                // Optional: Ensure it's fetching the latest commit
+                sh 'git fetch --all'
+                sh 'git reset --hard origin/develop'  // Reset to the latest commit from 'develop'
             }
         }
+
         stage('Set Permissions') {
             steps {
                 dir('Back/cine_back') {
-
                     sh 'chmod +x gradlew'
                 }
             }
         }
-        stage('Verify Tasks') {
-            steps {
-                dir('Back/cine_back') {
-                    sh './gradlew tasks'
-                }
-            }
-        }
+
         stage('Build') {
             steps {
                 dir('Back/cine_back') {
-                    sh './gradlew clean build -x test'
+                    sh './gradlew clean build -x test'  // Build sin ejecutar pruebas
                 }
             }
         }
+
+        stage('Run Tests') {  // Nueva etapa para ejecutar las pruebas
+            steps {
+                dir('Back/cine_back') {
+                    sh './gradlew test'  // Ejecuta las pruebas
+                }
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 dir('Back/cine_back') {
-                    withSonarQubeEnv('sonarqube') {
-                        sh './gradlew -b build.gradle sonarqube'
+                    withSonarQubeEnv('sonarqube'){
+                        sh './gradlew sonar -Dsonar.login=squ_12588c140fc2012b9317233038f6c837974b92fd'  // SonarQube análisis
                     }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            junit '**/build/test-results/test/*.xml'  // Publica los resultados de las pruebas
         }
     }
 }

@@ -21,9 +21,17 @@ repositories {
 
 sonarqube {
 	properties {
-		property "sonar.host.url","http://localhost:9000"
-		property "sonar.login","a61d7fb5b18df58f091dc8a8145979ae87ca6ffb"
+		property "sonar.host.url","http://157.173.122.1:9000"
+		property "sonar.login","squ_12588c140fc2012b9317233038f6c837974b92fd"
 		property "sonar.coverage.exclusions","**/bd/**, **/orm/**,**/dto/**"
+	}
+}
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required.set(true)
+		html.required.set(true)
+
 	}
 }
 
