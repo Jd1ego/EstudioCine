@@ -66,12 +66,6 @@ pipeline {
         always {
             junit '**/build/test-results/test/*.xml'
         }
-        success {
-                    githubNotify context: 'build', status: 'SUCCESS', description: 'Build successful'
-                }
-                failure {
-                    githubNotify context: 'build', status: 'FAILURE', description: 'Build failed'
-                }
-            }
+
     }
 
