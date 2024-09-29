@@ -25,6 +25,7 @@ public class GuionService {
         return null;
     }
     public String obtenerAutor(GuionORM guionORM) {
+
         return guionORM.getAutor();
     }
 }
