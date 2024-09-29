@@ -21,34 +21,36 @@ repositories {
 
 sonarqube {
 	properties {
-		property "sonar.host.url","http://157.173.122.1:9000"
-		property "sonar.login","squ_12588c140fc2012b9317233038f6c837974b92fd"
-		property "sonar.coverage.exclusions","**/bd/**, **/orm/**,**/dto/**, **/controller/**"
+		property "sonar.host.url", "http://157.173.122.1:9000"
+		property "sonar.login", "squ_12588c140fc2012b9317233038f6c837974b92fd"
+		property "sonar.coverage.exclusions", "**/bd/**, **/orm/**,**/dto/**, **/controller/**"
 	}
 }
+
 jacocoTestReport {
 	dependsOn test
 	reports {
 		xml.required.set(true)
 		html.required.set(true)
-
 	}
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.postgresql:postgresql:42.2.24'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.5'
+
+
+	implementation 'org.postgresql:postgresql:42.2.28'
+
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.mockito:mockito-core:5.2.0'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-
-
