@@ -30,6 +30,6 @@ public class EquipoProduccionController {
         return equipoProduccionService.obtenerEquiposProyectos();
     }
 
-
+error de prueba
 
 }
