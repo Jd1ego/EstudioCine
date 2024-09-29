@@ -14,6 +14,15 @@ pipeline {
             }
         }
 
+        stage('Prevent Direct Commit to Master') {
+            when {
+                branch 'master'
+            }
+            steps {
+                error 'Direct commits to the master branch are not allowed.'
+            }
+        }
+
         stage('Set Permissions') {
             steps {
                 dir('Back/cine_back') {
@@ -40,7 +49,6 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-
                 withSonarQubeEnv('sonarqube') {
                     dir('Back/cine_back') {
                         sh './gradlew sonar -Dsonar.login=squ_12588c140fc2012b9317233038f6c837974b92fd'
@@ -52,7 +60,6 @@ pipeline {
         stage('Sonar Quality Gate') {
             steps {
                 script {
-
                     def qualityGateResult = waitForQualityGate()
                     if (qualityGateResult.status != 'OK') {
                         error "Quality Gate failed: ${qualityGateResult.status}"
