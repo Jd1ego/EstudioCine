@@ -52,6 +52,6 @@ public class EquipoProduccionService {
                         proyectoService.obtenerIdsProyectos(equipo.getProyectos()),   // IDs de los proyectos
                         proyectoService.obtenerListaTitulosProyectos(equipo.getProyectos()) // Títulos de los proyectos
                 ))
-                .collect(Collectors.toList());
+                .toList();
     }
 }
