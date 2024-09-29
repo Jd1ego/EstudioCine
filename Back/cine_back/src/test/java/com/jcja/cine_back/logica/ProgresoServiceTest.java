@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ProgresoServiceTest {
+class ProgresoServiceTest {
 
 
     @Mock

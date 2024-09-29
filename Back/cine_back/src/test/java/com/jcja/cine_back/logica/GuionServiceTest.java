@@ -1,7 +1,6 @@
 package com.jcja.cine_back.logica;
 
 import com.jcja.cine_back.bd.orm.GuionORM;
-import com.jcja.cine_back.bd.orm.ProgresoORM;
 import com.jcja.cine_back.bd.orm.ProyectoORM;
 import com.jcja.cine_back.controller.dto.GuionDTO;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
-public class GuionServiceTest {
+class GuionServiceTest {
 
     @InjectMocks
     GuionService guionService;
