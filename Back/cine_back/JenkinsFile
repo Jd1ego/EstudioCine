@@ -19,7 +19,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                error 'Direct commits to the master branch are not allowed.'
+                error 'No se permite realizar commits directamente sobre la rama master'
             }
         }
 
@@ -47,11 +47,19 @@ pipeline {
             }
         }
 
+        stage('Generate JaCoCo Report') {
+            steps {
+                dir('Back/cine_back') {
+                    sh './gradlew jacocoTestReport'
+                }
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube') {
                     dir('Back/cine_back') {
-                        sh './gradlew sonar -Dsonar.login=squ_12588c140fc2012b9317233038f6c837974b92fd'
+                        sh './gradlew sonarqube -Dsonar.login=squ_12588c140fc2012b9317233038f6c837974b92fd'
                     }
                 }
             }

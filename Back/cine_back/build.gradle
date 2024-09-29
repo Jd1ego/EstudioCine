@@ -23,7 +23,8 @@ sonarqube {
 	properties {
 		property "sonar.host.url", "http://157.173.122.1:9000"
 		property "sonar.login", "squ_12588c140fc2012b9317233038f6c837974b92fd"
-		property "sonar.coverage.exclusions", "**/bd/**, **/orm/**,**/dto/**, **/controller/**"
+		property "sonar.jacoco.reportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml"
+		property "sonar.coverage.exclusions", "**/bd/**, **/orm/**, **/dto/**, **/controller/**, **/CineBackApplication.java"
 	}
 }
 
