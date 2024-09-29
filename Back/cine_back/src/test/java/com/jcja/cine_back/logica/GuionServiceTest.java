@@ -1,6 +1,7 @@
 package com.jcja.cine_back.logica;
 
 import com.jcja.cine_back.bd.orm.GuionORM;
+import com.jcja.cine_back.bd.orm.ProgresoORM;
 import com.jcja.cine_back.bd.orm.ProyectoORM;
 import com.jcja.cine_back.controller.dto.GuionDTO;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,13 @@ public class GuionServiceTest {
         assertEquals("Juan Pérez", guionORM.getAutor());
         assertEquals(fechaCreacion, guionORM.getFechaCreacion());
         assertEquals(proyecto, guionORM.getProyecto());
+    }
+    @Test
+    void GivenNullGuionDTO_whenCrearGuion_thenReturnNull() {
+        ProyectoORM proyecto = new ProyectoORM();
+        GuionORM guionORM = guionService.crearGuion(null,proyecto);
+
+        assertNull(guionORM);
     }
 
     @Test

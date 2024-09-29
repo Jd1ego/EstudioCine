@@ -32,7 +32,7 @@ public class EquipoProduccionServiceTest {
 
 
     @Test
-    void givenEquipoProduccionDTO_whenCrearEquipoProduccion_thenReturnEquipoProduccionORM() {
+    void GivenEquipoProduccionDTO_whenCrearEquipoProduccion_thenReturnEquipoProduccionORM() {
         EquipoProduccionDTO equipoProduccionDTO = new EquipoProduccionDTO(1L,"Nombre", "Rol", "Contacto", null, null);
 
         EquipoProduccionORM equipoProduccionORM = equipoProduccionService.crearEquipoProduccion(equipoProduccionDTO);
@@ -44,7 +44,7 @@ public class EquipoProduccionServiceTest {
     }
 
     @Test
-    void givenEquipoProduccionORM_whenGuardarEquipoProduccion_thenReturnTrue() {
+    void GivenEquipoProduccionORM_whenGuardarEquipoProduccion_thenReturnTrue() {
         EquipoProduccionORM equipoProduccionORM = new EquipoProduccionORM("Nombre", "Rol", "Contacto");
 
         boolean result = equipoProduccionService.guardarEquipoProduccion(equipoProduccionORM);
@@ -54,7 +54,7 @@ public class EquipoProduccionServiceTest {
     }
 
     @Test
-    void givenEquipoProduccionDTO_whenCrearYGuardarEquipoProduccion_thenReturnTrue() {
+    void GivenEquipoProduccionDTO_whenCrearYGuardarEquipoProduccion_thenReturnTrue() {
         EquipoProduccionDTO equipoProduccionDTO = new EquipoProduccionDTO(1L,"Nombre", "Rol", "Contacto", null, null);
         when(equipoProduccionJPA.save(any(EquipoProduccionORM.class))).thenReturn(new EquipoProduccionORM("Nombre", "Rol", "Contacto"));
 
@@ -65,7 +65,7 @@ public class EquipoProduccionServiceTest {
     }
 
     @Test
-    void whenObtenerTodosEquipos_thenReturnListOfEquipoProduccionORM() {
+    void WhenObtenerTodosEquipos_thenReturnListOfEquipoProduccionORM() {
         when(equipoProduccionJPA.findAll()).thenReturn(Collections.singletonList(new EquipoProduccionORM("Nombre", "Rol", "Contacto")));
 
         List<EquipoProduccionORM> equipos = equipoProduccionService.obtenerTodosEquipos();
@@ -74,7 +74,7 @@ public class EquipoProduccionServiceTest {
     }
 
     @Test
-    void whenObtenerEquiposProyectos_thenReturnListOfEquipoProduccionDTO() {
+    void WhenObtenerEquiposProyectos_thenReturnListOfEquipoProduccionDTO() {
         EquipoProduccionORM equipo = new EquipoProduccionORM("Nombre", "Rol", "Contacto");
         when(equipoProduccionJPA.findAll()).thenReturn(Collections.singletonList(equipo));
         when(proyectoService.obtenerIdsProyectos(any())).thenReturn(Collections.emptyList());

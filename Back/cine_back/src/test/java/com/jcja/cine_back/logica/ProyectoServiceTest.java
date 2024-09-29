@@ -43,7 +43,7 @@ public class ProyectoServiceTest {
 
 
     @Test
-    void givenProyectoDTO_whenCrearProyecto_thenReturnProyectoORM() {
+    void GivenProyectoDTO_whenCrearProyecto_thenReturnProyectoORM() {
         ProyectoDTO proyectoDTO = new ProyectoDTO("Titulo", null, null, null, null, null, null, null);
         ProyectoORM proyectoORM = proyectoService.crearProyecto(proyectoDTO);
 
@@ -52,7 +52,7 @@ public class ProyectoServiceTest {
     }
 
     @Test
-    void givenProyectoORM_whenGuardarProyecto_thenReturnTrue() {
+    void GivenProyectoORM_whenGuardarProyecto_thenReturnTrue() {
         ProyectoORM proyectoORM = new ProyectoORM("Titulo");
 
         boolean result = proyectoService.guardarProyecto(proyectoORM);
@@ -62,7 +62,7 @@ public class ProyectoServiceTest {
     }
 
     @Test
-    void givenProyectoDTO_whenCrearYGuardarProyectoCompleto_thenReturnTrue() {
+    void GivenProyectoDTO_whenCrearYGuardarProyectoCompleto_thenReturnTrue() {
         ProyectoDTO proyectoDTO = new ProyectoDTO("Titulo", null, null, null, null, null, null, null);
         GuionORM guionORM = new GuionORM();
         PresupuestoORM presupuestoORM = new PresupuestoORM();
@@ -79,7 +79,7 @@ public class ProyectoServiceTest {
     }
 
     @Test
-    void whenObtenerTitulosProyectos_thenReturnMap() {
+    void WhenObtenerTitulosProyectos_thenReturnMap() {
         ProyectoORM proyecto = new ProyectoORM(1L, "Titulo");
         when(proyectoJPA.findAll()).thenReturn(Collections.singletonList(proyecto));
 
@@ -90,7 +90,7 @@ public class ProyectoServiceTest {
     }
 
     @Test
-    void whenObtenerProyectos_thenReturnListOfProyectoORM() {
+    void WhenObtenerProyectos_thenReturnListOfProyectoORM() {
         ProyectoORM proyecto = new ProyectoORM(1L, "Titulo");
         when(proyectoJPA.findAll()).thenReturn(Collections.singletonList(proyecto));
 
@@ -101,7 +101,7 @@ public class ProyectoServiceTest {
     }
 
     @Test
-    public void givenProyectos_whenObtenerProyectoDetallado_thenReturnProyectoDTOList() {
+    public void GivenProyectos_whenObtenerProyectoDetallado_thenReturnProyectoDTOList() {
         ProyectoORM proyectoORM = new ProyectoORM();
         proyectoORM.setTitulo("Proyecto 1");
 
@@ -117,6 +117,30 @@ public class ProyectoServiceTest {
         assertEquals("Autor 1",guionService.obtenerAutor(proyectoORM.getGuion()));
         assertEquals(1000, presupuestoService.obtenerPresupuesto(proyectoORM.getPresupuesto()));
         assertEquals(50.0, progresoService.obtenerProgreso(proyectoORM.getProgreso()));
+    }
+    @Test
+    void GivenNullGuion_whenAsignarGuion_thenReturnFalse() {
+        ProyectoORM proyectoORM = new ProyectoORM();
+        boolean result = proyectoService.asignarGuion(null, proyectoORM);
+
+        assertFalse(result);
+        assertNull(proyectoORM.getGuion());
+    }
+    @Test
+    void GivenNullPresupuesto_whenAsignarPresupuesto_thenReturnFalse() {
+        ProyectoORM proyectoORM = new ProyectoORM();
+        boolean result = proyectoService.asignarPresupuesto(null, proyectoORM);
+
+        assertFalse(result);
+        assertNull(proyectoORM.getPresupuesto());
+    }
+    @Test
+    void GivenNullProgreso_whenAsignarProgreso_thenReturnFalse() {
+        ProyectoORM proyectoORM = new ProyectoORM();
+        boolean result = proyectoService.asignarProgreso(null, proyectoORM);
+
+        assertFalse(result);
+        assertNull(proyectoORM.getProgreso());
     }
 }
 

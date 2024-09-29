@@ -24,7 +24,7 @@ public class PresupuestoServiceTest {
 
 
     @Test
-    void givenPresupuestoDTOAndProyecto_whenCrearPresupuesto_thenReturnPresupuestoORM() {
+    void GivenPresupuestoDTOAndProyecto_whenCrearPresupuesto_thenReturnPresupuestoORM() {
 
         PresupuestoDTO presupuestoDTO = new PresupuestoDTO(10000, "USD", proyectoMock);
 
@@ -37,9 +37,15 @@ public class PresupuestoServiceTest {
         assertEquals("USD", presupuestoORM.getMoneda());
         assertEquals(proyectoMock, presupuestoORM.getProyecto());
     }
+    @Test
+    void GivenNullPresupuestoDTO_whenPresupuesto_thenReturnNull() {
+        PresupuestoORM presupuestoORM = presupuestoService.crearPresupuesto(null, proyectoMock);
+
+        assertNull(presupuestoORM);
+    }
 
     @Test
-    void givenPresupuestoORM_whenObtenerPresupuesto_thenReturnCantidad() {
+    void GivenPresupuestoORM_whenObtenerPresupuesto_thenReturnCantidad() {
 
         PresupuestoORM presupuestoORM = new PresupuestoORM(10000, "USD", new ProyectoORM());
 

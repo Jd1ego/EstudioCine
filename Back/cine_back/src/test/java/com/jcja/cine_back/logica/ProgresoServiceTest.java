@@ -26,7 +26,7 @@ public class ProgresoServiceTest {
 
 
     @Test
-    void givenProgresoDTOAndProyecto_whenCrearProgreso_thenReturnProgresoORM() {
+    void GivenProgresoDTOAndProyecto_whenCrearProgreso_thenReturnProgresoORM() {
         ProgresoDTO progresoDTO = new ProgresoDTO("Etapa 1", 75.0, LocalDate.now(),proyectoMock);
 
         ProgresoORM progresoORM = progresoService.crearProgreso(progresoDTO, proyectoMock);
@@ -37,9 +37,15 @@ public class ProgresoServiceTest {
         assertEquals(progresoDTO.fechaActualizacion(), progresoORM.getFechaActualizacion());
         assertEquals(proyectoMock, progresoORM.getProyecto());
     }
+    @Test
+    void GivenNullProgresoDTO_whenCrearProgreso_thenReturnNull() {
+        ProgresoORM progresoORM = progresoService.crearProgreso(null, proyectoMock);
+
+        assertNull(progresoORM);
+    }
 
     @Test
-    void givenProgresoORM_whenObtenerProgreso_thenReturnPorcentaje() {
+    void GivenProgresoORM_whenObtenerProgreso_thenReturnPorcentaje() {
         ProgresoORM progresoORM = new ProgresoORM("Etapa 1", 75.0, LocalDate.now(), new ProyectoORM());
 
         Double porcentaje = progresoService.obtenerProgreso(progresoORM);
