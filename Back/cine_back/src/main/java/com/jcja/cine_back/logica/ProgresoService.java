@@ -14,7 +14,7 @@ public class ProgresoService {
 
     private ProgresoJPA progresoJPA;
 
-    public ProgresoORM CrearProgreso(ProgresoDTO progresoDTO, ProyectoORM proyecto) {
+    public ProgresoORM crearProgreso(ProgresoDTO progresoDTO, ProyectoORM proyecto) {
         if (progresoDTO!=null){
             return new ProgresoORM(
                     progresoDTO.etapa(),

@@ -25,12 +25,12 @@ public class ProyectoController {
 
     }
     @GetMapping (path = "/Proyectos/All")
-    public List consultarProyectos(){
+    public List<ProyectoORM> consultarProyectos(){
         return
                 proyectoService.obtenerProyectos();
     }
     @GetMapping(path = "/Proyectos/titulos")
-    public Map consultarTituloProyectos(){
+    public Map<Long, String> consultarTituloProyectos(){
         return
                 proyectoService.obtenerTitulosProyectos();
 

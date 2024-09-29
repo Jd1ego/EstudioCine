@@ -72,7 +72,7 @@ public class ProyectoService {
         asignarGuion(guionORM,proyectoORM);
         PresupuestoORM presupuestoORM = presupuestoService.crearPresupuesto(proyectoDTO.presupuestoDTO(),proyectoORM);
         asignarPresupuesto(presupuestoORM,proyectoORM);
-        ProgresoORM progresoORM = progresoService.CrearProgreso(proyectoDTO.progresoDTO(),proyectoORM);
+        ProgresoORM progresoORM = progresoService.crearProgreso(proyectoDTO.progresoDTO(),proyectoORM);
         asignarProgreso(progresoORM,proyectoORM);
         guardarProyecto(proyectoORM);
 
@@ -88,17 +88,17 @@ public class ProyectoService {
     public List<ProyectoORM> obtenerProyectos() {
         return proyectoJPA.findAll().stream()
                 .map(proyecto -> new ProyectoORM(proyecto.getId(), proyecto.getTitulo()))
-                .collect(Collectors.toList());
+                .toList();
     }
     public List<Long> obtenerIdsProyectos(List<ProyectoORM> proyectos) {
         return proyectos.stream()
                 .map(ProyectoORM::getId)
-                .collect(Collectors.toList());
+                .toList();
     }
     public List<String> obtenerListaTitulosProyectos(List<ProyectoORM> proyectos) {
         return proyectos.stream()
                 .map(ProyectoORM::getTitulo)
-                .collect(Collectors.toList());
+                .toList();
     }
     public List<ProyectoDTO> obtenerProyectoDetallado(){
         return proyectoJPA.findAll().stream().map(proyecto-> new ProyectoDTO(
@@ -112,7 +112,7 @@ public class ProyectoService {
                 proyecto.getPresupuesto() != null ? presupuestoService.obtenerPresupuesto(proyecto.getPresupuesto()) : 0,
                 proyecto.getProgreso() != null ? progresoService.obtenerProgreso(proyecto.getProgreso()) : 0
 
-        )).collect(Collectors.toList());
+        )).toList();
 
     }
 
