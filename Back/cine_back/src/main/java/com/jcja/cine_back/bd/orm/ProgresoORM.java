@@ -20,7 +20,7 @@ public class ProgresoORM {
     private String etapa;
 
     @Column (name = "porcentaje_completado")
-    private double porcentajeCompletado;
+    private Double porcentajeCompletado;
 
     @Column (name = "fecha_actualizacion")
     private LocalDate fechaActualizacion;
