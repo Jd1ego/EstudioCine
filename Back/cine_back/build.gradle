@@ -21,8 +21,8 @@ repositories {
 
 sonarqube {
 	properties {
-		property "sonar.host.url", "http://157.173.122.1:9000"
-		property "sonar.login", "squ_12588c140fc2012b9317233038f6c837974b92fd"
+		property "sonar.host.url", "http://217.77.12.236:9000"
+		property "sonar.login", "squ_128e1536dda8b1b50447f7778c3425d98f3ab40f"
 		property "sonar.jacoco.reportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml"
 		property "sonar.coverage.exclusions", "**/bd/**, **/orm/**, **/dto/**, **/controller/**, **/CineBackApplication.java"
 	}
