@@ -47,8 +47,17 @@ public class AuditoriaServiceTest {
         auditoriaService.registrarAuditoria(nombreProyecto, idProyecto, estadoAnterior, nuevoEstado, fechaHoraCambio, usuarioCambio);
 
         // Assert
-        verify(auditoriaJPA, times(1)).save(any(AuditoriaORM.class)); // Verificamos que save se haya llamado una vez
+        // Verificamos que se haya creado un objeto AuditoriaORM y se haya guardado
+        verify(auditoriaJPA, times(1)).save(argThat(auditoria ->
+                auditoria.getNombreProyecto().equals(nombreProyecto) &&
+                        auditoria.getIdProyecto().equals(idProyecto) &&
+                        auditoria.getEstadoAnterior().equals(estadoAnterior) &&
+                        auditoria.getNuevoEstado().equals(nuevoEstado) &&
+                        auditoria.getFechaHoraCambio().equals(fechaHoraCambio) &&
+                        auditoria.getUsuarioCambio().equals(usuarioCambio)
+        ));
     }
+
 
     @Test
     void testObtenerAuditorias() {
