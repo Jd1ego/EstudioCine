@@ -36,8 +36,22 @@ pipeline {
             steps {
                 script {
                     def dockerImageTag = "jsebas656/estudio-cine:latest" // Etiqueta de la imagen
-                   
                     sh "docker build -t ${dockerImageTag} -f Back/cine_back/Dockerfile Back/cine_back"
+                }
+            }
+        }
+
+        stage('Trivy Vulnerability Scan') {
+            steps {
+                script {
+                    def dockerImageTag = "jsebas656/estudio-cine:latest"
+                    sh """
+                    docker run --rm \
+                      -v /var/run/docker.sock:/var/run/docker.sock \
+                      -v $HOME/Library/Caches:/root/.cache/ \
+                      aquasec/trivy image --severity HIGH,CRITICAL \
+                      ${dockerImageTag}
+                    """
                 }
             }
         }
@@ -86,7 +100,6 @@ pipeline {
                 script {
                     def dockerImageTag = "jsebas656/estudio-cine:latest"
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-credenciales') {
-                        
                         sh "docker push ${dockerImageTag}"
                     }
                 }
