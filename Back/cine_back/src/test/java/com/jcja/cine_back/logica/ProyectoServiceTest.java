@@ -3,6 +3,7 @@ package com.jcja.cine_back.logica;
 import com.jcja.cine_back.bd.jpa.ProyectoJPA;
 import com.jcja.cine_back.bd.jpa.EquipoProduccionJPA;
 import com.jcja.cine_back.bd.orm.*;
+import com.jcja.cine_back.controller.dto.ProgresoDTO;
 import com.jcja.cine_back.controller.dto.ProyectoDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +19,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 class ProyectoServiceTest {
-
-
 
     @Mock
     private PresupuestoService presupuestoService;
@@ -40,7 +39,6 @@ class ProyectoServiceTest {
 
     @InjectMocks
     private ProyectoService proyectoService;
-
 
     @Test
     void GivenProyectoDTO_whenCrearProyecto_thenReturnProyectoORM() {
@@ -101,7 +99,7 @@ class ProyectoServiceTest {
     }
 
     @Test
-    public void GivenProyectos_whenObtenerProyectoDetallado_thenReturnProyectoDTOList() {
+    void GivenProyectos_whenObtenerProyectoDetallado_thenReturnProyectoDTOList() {
         ProyectoORM proyectoORM = new ProyectoORM();
         proyectoORM.setTitulo("Proyecto 1");
 
@@ -114,10 +112,11 @@ class ProyectoServiceTest {
 
         assertEquals(1, result.size());
         assertEquals("Proyecto 1", result.get(0).titulo());
-        assertEquals("Autor 1",guionService.obtenerAutor(proyectoORM.getGuion()));
+        assertEquals("Autor 1", guionService.obtenerAutor(proyectoORM.getGuion()));
         assertEquals(1000, presupuestoService.obtenerPresupuesto(proyectoORM.getPresupuesto()));
         assertEquals(50.0, progresoService.obtenerProgreso(proyectoORM.getProgreso()));
     }
+
     @Test
     void GivenNullGuion_whenAsignarGuion_thenReturnFalse() {
         ProyectoORM proyectoORM = new ProyectoORM();
@@ -126,6 +125,7 @@ class ProyectoServiceTest {
         assertFalse(result);
         assertNull(proyectoORM.getGuion());
     }
+
     @Test
     void GivenNullPresupuesto_whenAsignarPresupuesto_thenReturnFalse() {
         ProyectoORM proyectoORM = new ProyectoORM();
@@ -134,6 +134,7 @@ class ProyectoServiceTest {
         assertFalse(result);
         assertNull(proyectoORM.getPresupuesto());
     }
+
     @Test
     void GivenNullProgreso_whenAsignarProgreso_thenReturnFalse() {
         ProyectoORM proyectoORM = new ProyectoORM();
@@ -142,5 +143,54 @@ class ProyectoServiceTest {
         assertFalse(result);
         assertNull(proyectoORM.getProgreso());
     }
-}
 
+    @Test
+    void GivenProyectoId_whenActualizarProgreso_thenReturnTrue() {
+        Long proyectoId = 1L;
+        ProyectoORM proyectoORM = new ProyectoORM(proyectoId, "Proyecto 1");
+        ProgresoORM progresoORM = new ProgresoORM();
+
+        // Crear un ProgresoDTO con los valores necesarios
+        ProgresoDTO progresoDTO = new ProgresoDTO("Etapa 1", 50.0, LocalDate.now(), proyectoORM);
+
+        when(proyectoJPA.findById(proyectoId)).thenReturn(java.util.Optional.of(proyectoORM));
+        when(progresoService.actualizarProgreso(any(), eq(proyectoORM))).thenReturn(progresoORM);
+
+        boolean result = proyectoService.actualizarProgresoDelProyecto(proyectoId, progresoDTO);
+
+        assertTrue(result);
+        assertEquals(progresoORM, proyectoORM.getProgreso());
+        verify(proyectoJPA, times(1)).save(proyectoORM);
+    }
+
+    @Test
+    void GivenInvalidProyectoId_whenActualizarProgreso_thenReturnFalse() {
+        Long proyectoId = 999L;
+        when(proyectoJPA.findById(proyectoId)).thenReturn(java.util.Optional.empty());
+
+        boolean result = proyectoService.actualizarProgresoDelProyecto(proyectoId, new ProgresoDTO("etapa", 50.0, LocalDate.now(), new ProyectoORM()));
+
+        assertFalse(result);
+    }
+
+    @Test
+    void GivenProyectoId_whenObtenerTituloPorId_thenReturnTitulo() {
+        Long proyectoId = 1L;
+        ProyectoORM proyectoORM = new ProyectoORM(proyectoId, "Proyecto Test");
+        when(proyectoJPA.findById(proyectoId)).thenReturn(java.util.Optional.of(proyectoORM));
+
+        String titulo = proyectoService.obtenerTituloPorId(proyectoId);
+
+        assertEquals("Proyecto Test", titulo);
+    }
+
+    @Test
+    void GivenInvalidProyectoId_whenObtenerTituloPorId_thenReturnNull() {
+        Long proyectoId = 999L;
+        when(proyectoJPA.findById(proyectoId)).thenReturn(java.util.Optional.empty());
+
+        String titulo = proyectoService.obtenerTituloPorId(proyectoId);
+
+        assertNull(titulo);
+    }
+}
