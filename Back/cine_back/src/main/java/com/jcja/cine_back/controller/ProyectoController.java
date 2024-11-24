@@ -4,6 +4,7 @@ import com.jcja.cine_back.bd.orm.ProyectoORM;
 import com.jcja.cine_back.controller.dto.ProgresoActualizadoEvento;
 import com.jcja.cine_back.controller.dto.ProgresoDTO;
 import com.jcja.cine_back.controller.dto.ProyectoDTO;
+import com.jcja.cine_back.logica.EquipoProduccionService;
 import com.jcja.cine_back.logica.ProgresoService;
 import com.jcja.cine_back.logica.ProyectoService;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class ProyectoController {
 
     private ProyectoService proyectoService;
     private ProgresoService progresoService;
+    private EquipoProduccionService equipoProduccionService;
     private final RabbitTemplate rabbitTemplate;
 
     @PostMapping(path = "/Proyecto")
@@ -34,40 +36,38 @@ public class ProyectoController {
     }
     @PostMapping("/Proyectos/{id}/progreso")
     public String actualizarProgreso(@PathVariable Long id, @RequestBody ProgresoDTO progresoDTO) {
-        // Intentar obtener el proyecto por su ID
         ProyectoORM proyecto = proyectoService.obtenerProyectoPorId(id);
         if (proyecto == null) {
             return "Proyecto no encontrado";
         }
 
-        // Obtener el progreso actual del proyecto
         ProgresoORM progresoExistente = progresoService.obtenerProgresoPorProyecto(proyecto);
 
-        // Si no existe progreso para el proyecto, se puede crear uno nuevo o manejar el caso
         if (progresoExistente == null) {
             return "No se ha encontrado progreso para este proyecto";
         }
 
-        // Verificar si el estado realmente ha cambiado
         String estadoAnterior = progresoExistente.getEtapa();
         String nuevoEstado = progresoDTO.etapa();
 
         if (!estadoAnterior.equals(nuevoEstado)) {
-            // Actualizar el progreso solo si el estado ha cambiado
             boolean actualizado = proyectoService.actualizarProgresoDelProyecto(id, progresoDTO);
 
             if (actualizado) {
-                // Obtener el título del proyecto usando el id
                 String tituloProyecto = proyectoService.obtenerTituloPorId(id);
+
+                // Obtener los correos del equipo
+                List<String> correosEquipo = equipoProduccionService.obtenerCorreosPorProyecto(id);
 
                 // Crear el evento con los nuevos y antiguos estados
                 ProgresoActualizadoEvento evento = new ProgresoActualizadoEvento(
                         tituloProyecto,
                         id,
-                        estadoAnterior, // El estado anterior
-                        nuevoEstado, // El nuevo estado
+                        estadoAnterior,
+                        nuevoEstado,
                         LocalDateTime.now(),
-                        "UsuarioSistema"
+                        "UsuarioSistema",
+                        correosEquipo
                 );
 
                 // Enviar el evento a RabbitMQ
@@ -80,10 +80,11 @@ public class ProyectoController {
                 return "No se pudo actualizar el progreso";
             }
         } else {
-            // Si no hay cambio en el estado, no se envía el evento
             return "El estado no ha cambiado";
         }
     }
+
+
 
 
 

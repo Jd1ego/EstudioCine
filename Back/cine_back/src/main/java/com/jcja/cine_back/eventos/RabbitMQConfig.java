@@ -37,17 +37,27 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue progresoActualizadoQueue() {
-        return new Queue("progreso_actualizado_queue", true);
+    public Queue auditoriaQueue() {
+        return new Queue("auditoria_queue", true);
     }
 
     @Bean
-    public DirectExchange exchange() {
+    public Queue notificacionesQueue() {
+        return new Queue("notificaciones_queue", true);
+    }
+
+    @Bean
+    public DirectExchange progresoExchange() {
         return new DirectExchange("progreso_exchange");
     }
 
     @Bean
-    public Binding binding(Queue progresoActualizadoQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(progresoActualizadoQueue).to(exchange).with("progreso.actualizado");
+    public Binding bindingAuditoria(Queue auditoriaQueue, DirectExchange progresoExchange) {
+        return BindingBuilder.bind(auditoriaQueue).to(progresoExchange).with("progreso.actualizado");
+    }
+
+    @Bean
+    public Binding bindingNotificaciones(Queue notificacionesQueue, DirectExchange progresoExchange) {
+        return BindingBuilder.bind(notificacionesQueue).to(progresoExchange).with("progreso.actualizado");
     }
 }

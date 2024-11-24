@@ -15,13 +15,13 @@ public class AuditoriaService {
     @Autowired
     private AuditoriaJPA auditoriaJPA;
 
-    // Guardar una auditoría en la base de datos
+
     public void registrarAuditoria(String nombreProyecto, Long idProyecto, String estadoAnterior, String nuevoEstado, LocalDateTime fechaHoraCambio, String usuarioCambio) {
         AuditoriaORM auditoria = new AuditoriaORM(nombreProyecto, idProyecto, estadoAnterior, nuevoEstado, fechaHoraCambio, usuarioCambio);
         auditoriaJPA.save(auditoria);
     }
 
-    // Obtener todos los registros de auditoría
+
     public List<AuditoriaORM> obtenerAuditorias() {
         return auditoriaJPA.findAll();
     }
@@ -38,4 +38,5 @@ public class AuditoriaService {
         // Guardar el registro en la base de datos
         auditoriaJPA.save(auditoria);
     }
+
 }

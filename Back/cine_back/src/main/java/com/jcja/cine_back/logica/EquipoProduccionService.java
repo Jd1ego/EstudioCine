@@ -1,12 +1,15 @@
 package com.jcja.cine_back.logica;
 
 import com.jcja.cine_back.bd.jpa.EquipoProduccionJPA;
+import com.jcja.cine_back.bd.jpa.ProyectoEquipoJPA;
 import com.jcja.cine_back.bd.orm.EquipoProduccionORM;
+import com.jcja.cine_back.bd.orm.ProyectoEquipoORM;
 import com.jcja.cine_back.bd.orm.ProyectoORM;
 import com.jcja.cine_back.controller.dto.EquipoProduccionDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class EquipoProduccionService {
 
+    private final ProyectoEquipoJPA proyectoEquipoJPA;
     private EquipoProduccionJPA equipoProduccionJPA;
     private ProyectoService proyectoService;
 
@@ -54,4 +58,20 @@ public class EquipoProduccionService {
                 ))
                 .toList();
     }
+    public List<String> obtenerCorreosPorProyecto(Long proyectoId) {
+        // Obtener la lista de IDs de los equipos relacionados con el proyecto
+        List<ProyectoEquipoORM> proyectosEquipos = proyectoEquipoJPA.findByProyectoId(proyectoId);
+
+        // Obtener los correos de los miembros del equipo
+        List<String> correos = new ArrayList<>();
+        for (ProyectoEquipoORM proyectoEquipo : proyectosEquipos) {
+            EquipoProduccionORM equipo = equipoProduccionJPA.findById(proyectoEquipo.getEquipoProduccion().getId())
+                    .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+            correos.add(equipo.getContacto());  // Asumiendo que 'contacto' es el correo electrónico
+        }
+        return correos;
+    }
+
+
+
 }

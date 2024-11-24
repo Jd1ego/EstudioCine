@@ -1,5 +1,6 @@
 package com.jcja.cine_back.eventos;
 
+
 import com.jcja.cine_back.controller.dto.ProgresoActualizadoEvento;
 import com.jcja.cine_back.logica.AuditoriaService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -12,7 +13,7 @@ public class AuditoriaConsumer {
     @Autowired
     private AuditoriaService auditoriaService;
 
-    @RabbitListener(queues = "progreso_actualizado_queue")
+    @RabbitListener(queues = "auditoria_queue")
     public void procesarEvento(ProgresoActualizadoEvento evento) {
         System.out.println("Evento recibido para auditoría: " + evento);
 
