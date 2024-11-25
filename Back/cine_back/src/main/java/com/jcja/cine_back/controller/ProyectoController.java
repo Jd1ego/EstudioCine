@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 
-@CrossOrigin(origins = "http://157.173.122.1:3000")
+@CrossOrigin(origins = "http://217.77.12.236:3000")
 public class ProyectoController {
 
     private ProyectoService proyectoService;
